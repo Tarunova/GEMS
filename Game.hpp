@@ -11,7 +11,6 @@ private:
     static int constexpr delayMS = 128;
     static int constexpr boardDimension = 10;
     static int constexpr cellSize = 64;
-    static float constexpr specialGemProbability = 0.05f;
 
     std::vector<std::vector<std::shared_ptr<Gem>>> gameBoard;
     sf::RenderWindow gameWindow;
@@ -23,6 +22,7 @@ private:
     void renderBoard();
     void processEvents();
     void gameUpdate();
+    void drawSelected();
 
     void performSwap(sf::Vector2i first, sf::Vector2i second);
     bool findAndRemoveMatches();

@@ -12,7 +12,6 @@ enum class GemColor
     Blue,
     Magenta,
     Orange,
-    Hazel,
     Violet
 };
 
@@ -21,6 +20,10 @@ class Game;
 class Gem
 {
     friend class Game;
+
+private:
+    static float constexpr bonusGemProbability = 0.05f;
+
 protected:
     GemColor color;
     sf::RectangleShape shape;

@@ -42,6 +42,18 @@ void Game::renderBoard()
     }
 }
 
+void Game::drawSelected()
+{
+    if (selectedCell.x >= 0 && selectedCell.y >= 0 &&
+        selectedCell.x < boardDimension && selectedCell.y < boardDimension)
+    {
+        sf::RectangleShape overlayShape = gameBoard[selectedCell.y][selectedCell.x]->shape;
+        overlayShape.setFillColor(sf::Color(255, 255, 255, 150));
+        gameWindow.draw(overlayShape);
+    }
+    
+}
+
 
 void Game::processEvents()
 {
@@ -110,6 +122,7 @@ void Game::startGameLoop()
 
         gameWindow.clear();
         renderBoard();
+        drawSelected();
         gameWindow.display();
         std::this_thread::sleep_for(std::chrono::milliseconds(delayMS));
     }
@@ -218,6 +231,6 @@ GemColor Game::generateRandomColor() const
 {
     static std::random_device rd;
     static std::mt19937 gen(rd());
-    static std::uniform_int_distribution<int> dist(0, 8);
+    static std::uniform_int_distribution<int> dist(0, 7);
     return static_cast<GemColor>(dist(gen));
 }

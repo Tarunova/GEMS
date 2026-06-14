@@ -2,10 +2,7 @@
 #include "GemBomb.hpp"
 #include "GemPaint.hpp"
 
-#include <assert.h>
-
 #include <random>
-#include <iostream>
 
 Gem::Gem(GemColor color, sf::Vector2f s) : color(color)
 {
@@ -32,10 +29,7 @@ Gem::Gem(GemColor color, sf::Vector2f s) : color(color)
         shape.setFillColor(sf::Color(201, 19, 207));
         break;
     case GemColor::Orange:
-        shape.setFillColor(sf::Color(255, 68, 0));
-        break;
-    case GemColor::Hazel:
-        shape.setFillColor(sf::Color(69, 92, 0));
+        shape.setFillColor(sf::Color(255, 90, 20));
         break;
     case GemColor::Violet:
         shape.setFillColor(sf::Color(42, 0, 97));
@@ -56,8 +50,8 @@ bool Gem::areNeighbors(sf::Vector2i first, sf::Vector2i second)
 void Gem::onMatched(std::vector<std::vector<std::shared_ptr<Gem>>>& grid, int row, int col)
 {
 
-    int rows = grid.size();
-    int cols = grid[0].size();
+    int rows = int(grid.size());
+    int cols = int(grid[0].size());
 
     static std::random_device rd;
     static std::mt19937 gen(rd());
@@ -74,17 +68,13 @@ void Gem::onMatched(std::vector<std::vector<std::shared_ptr<Gem>>>& grid, int ro
         {
             std::uniform_real_distribution<float> chance(0.f, 1.f);
             float randomValue = chance(gen);
-            if (randomValue < 0.05f)
+            if (randomValue < bonusGemProbability)
             {
-                grid[r][c] = std::make_shared<GemBomb>(color, shape.getSize());
+                grid[r][c] = std::make_shared<GemBomb>(grid[r][c]->color, shape.getSize());
             }
-            else if (randomValue < 0.10f)
+            else if (randomValue < bonusGemProbability*2.0f)
             {
-                grid[r][c] = std::make_shared<GemPaint>(color, shape.getSize());
-            }
-            else
-            {
-                grid[r][c] = std::make_shared<Gem>(color, shape.getSize());
+                grid[r][c] = std::make_shared<GemPaint>(grid[r][c]->color, shape.getSize());
             }
             made++;
         }

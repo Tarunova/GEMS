@@ -12,8 +12,8 @@ void GemBomb::onMatched(std::vector<std::vector<std::shared_ptr<Gem>>> &grid, in
 {
     Gem::onMatched(grid, row, col);
 
-    int rows = grid.size();
-    int cols = grid[0].size();
+    int rows = int(grid.size());
+    int cols = int(grid[0].size());
 
     std::random_device rd;
     std::mt19937 gen(rd());
