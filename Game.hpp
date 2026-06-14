@@ -8,6 +8,7 @@
 class Game
 {
 private:
+    static int constexpr delayMS = 128;
     static int constexpr boardDimension = 10;
     static int constexpr cellSize = 64;
     static float constexpr specialGemProbability = 0.05f;
@@ -16,6 +17,7 @@ private:
     sf::RenderWindow gameWindow;
 
     sf::Vector2i selectedCell = sf::Vector2i(-1, -1);
+    bool lock = false;
 
     void initializeBoard();
     void renderBoard();

@@ -10,7 +10,10 @@ enum class GemColor
     Green,
     Cyan,
     Blue,
-    Magenta
+    Magenta,
+    Orange,
+    Hazel,
+    Violet
 };
 
 class Game;
@@ -29,5 +32,5 @@ public:
     
     static bool areNeighbors(sf::Vector2i first, sf::Vector2i second);
     virtual void setPosition(float x, float y);
-    virtual void onMatched(std::vector<std::vector<std::shared_ptr<Gem>>>& grid, int row, int col) {};
+    virtual void onMatched(std::vector<std::vector<std::shared_ptr<Gem>>>& grid, int row, int col);
 };

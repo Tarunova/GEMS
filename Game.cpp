@@ -21,7 +21,7 @@ void Game::initializeBoard()
         for (int col = 0; col < boardDimension; ++col)
         {
             GemColor color = generateRandomColor();
-            gameBoard[row][col] = std::make_shared<GemPaint>(color, sf::Vector2f(float(cellSize), float(cellSize)));
+            gameBoard[row][col] = std::make_shared<Gem>(color, sf::Vector2f(float(cellSize), float(cellSize)));
             gameBoard[row][col]->setPosition(float(col * cellSize), float(row * cellSize));
         }
     }
@@ -51,7 +51,7 @@ void Game::processEvents()
         if (event.type == sf::Event::Closed)
             gameWindow.close();
 
-        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+        if (!lock && event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
         {
             int clickX = event.mouseButton.x / cellSize;
             int clickY = event.mouseButton.y / cellSize;
@@ -88,20 +88,17 @@ void Game::processEvents()
 
 void Game::gameUpdate()
 {
-    int counter = 1;
+    int counter = 100;
     bool matchesFound = false;
     dropGems();
     replenishBoard();
-    do
+    matchesFound = findAndRemoveMatches();
+    if (matchesFound)
     {
-        counter--;
-        matchesFound = findAndRemoveMatches();
-        if (matchesFound)
-        {
-            dropGems();
-            replenishBoard();
-        }
-    } while (matchesFound && counter);
+        dropGems();
+        replenishBoard();
+    }
+    lock = matchesFound;
 }
 
 void Game::startGameLoop()
@@ -114,7 +111,7 @@ void Game::startGameLoop()
         gameWindow.clear();
         renderBoard();
         gameWindow.display();
-        std::this_thread::sleep_for(std::chrono::milliseconds(32));
+        std::this_thread::sleep_for(std::chrono::milliseconds(delayMS));
     }
 }
 
@@ -171,6 +168,7 @@ bool Game::findAndRemoveMatches()
     {
         if (gameBoard[row][col])
         {
+            gameBoard[row][col]->onMatched(gameBoard, row, col);
             gameBoard[row][col] = nullptr;
         }
     }
@@ -220,7 +218,6 @@ GemColor Game::generateRandomColor() const
 {
     static std::random_device rd;
     static std::mt19937 gen(rd());
-    static std::uniform_int_distribution<int> dist(0, 5);
+    static std::uniform_int_distribution<int> dist(0, 8);
     return static_cast<GemColor>(dist(gen));
 }
-
