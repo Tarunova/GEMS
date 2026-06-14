@@ -27,6 +27,7 @@ public:
     virtual ~Gem() = default;
 
     
-
+    static bool areNeighbors(sf::Vector2i first, sf::Vector2i second);
     virtual void setPosition(float x, float y);
+    virtual void onMatched(std::vector<std::vector<std::shared_ptr<Gem>>>& grid, int row, int col) {};
 };

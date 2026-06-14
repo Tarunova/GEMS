@@ -22,7 +22,6 @@ private:
     void processEvents();
     void gameUpdate();
 
-    bool areNeighbors(sf::Vector2i first, sf::Vector2i second);
     void performSwap(sf::Vector2i first, sf::Vector2i second);
     bool findAndRemoveMatches();
     void dropGems();

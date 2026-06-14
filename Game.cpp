@@ -3,6 +3,10 @@
 #include <algorithm>
 #include <set>
 #include <iostream>
+#include <chrono>
+#include <thread>
+#include "GemBomb.hpp"
+#include "GemPaint.hpp"
 
 Game::Game() : gameWindow(sf::VideoMode(boardDimension* cellSize, boardDimension* cellSize), "Gems")
 {
@@ -17,7 +21,7 @@ void Game::initializeBoard()
         for (int col = 0; col < boardDimension; ++col)
         {
             GemColor color = generateRandomColor();
-            gameBoard[row][col] = std::make_shared<Gem>(color, sf::Vector2f(float(cellSize), float(cellSize)));
+            gameBoard[row][col] = std::make_shared<GemPaint>(color, sf::Vector2f(float(cellSize), float(cellSize)));
             gameBoard[row][col]->setPosition(float(col * cellSize), float(row * cellSize));
         }
     }
@@ -62,7 +66,7 @@ void Game::processEvents()
                 else
                 {
                     sf::Vector2i secondCell( clickX, clickY );
-                    if (areNeighbors(selectedCell, secondCell))
+                    if (Gem::areNeighbors(selectedCell, secondCell))
                     {
                         performSwap(selectedCell, secondCell);
                         if (findAndRemoveMatches())
@@ -84,7 +88,7 @@ void Game::processEvents()
 
 void Game::gameUpdate()
 {
-    int counter = 100;
+    int counter = 1;
     bool matchesFound = false;
     dropGems();
     replenishBoard();
@@ -110,12 +114,8 @@ void Game::startGameLoop()
         gameWindow.clear();
         renderBoard();
         gameWindow.display();
+        std::this_thread::sleep_for(std::chrono::milliseconds(32));
     }
-}
-
-bool Game::areNeighbors(sf::Vector2i first, sf::Vector2i second)
-{
-    return (std::abs(first.x - second.x) + std::abs(first.y - second.y)) == 1;
 }
 
 void Game::performSwap(sf::Vector2i first, sf::Vector2i second)

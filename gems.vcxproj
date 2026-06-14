@@ -132,11 +132,15 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Gem.cpp" />
+    <ClCompile Include="GemBomb.cpp" />
+    <ClCompile Include="GemPaint.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Gem.hpp" />
+    <ClInclude Include="GemBomb.hpp" />
+    <ClInclude Include="GemPaint.hpp" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="SFML-2.6.2\bin\sfml-graphics-2.dll">

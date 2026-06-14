@@ -32,6 +32,11 @@ void Gem::setPosition(float x, float y)
     shape.setPosition(x, y);
 }
 
+bool Gem::areNeighbors(sf::Vector2i first, sf::Vector2i second)
+{
+    return (std::abs(first.x - second.x) + std::abs(first.y - second.y)) == 1;
+}
+
 
 
 
